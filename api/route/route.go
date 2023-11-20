@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/Ethea2/nat-dev/api/controller"
+	"github.com/Ethea2/nat-dev/middleware"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -11,7 +12,8 @@ func SetupRoutes(app *fiber.App) {
 
 	user := api.Group("/user")
 	user.Post("/login", controller.Login)
+	user.Post("/signup", controller.SignUp)
 
-	post := api.Group("/post")
-	post.Get("/", controller.GetPosts)
+	project := api.Group("/project")
+	project.Get("/", middleware.Protected(), controller.GetPosts)
 }
