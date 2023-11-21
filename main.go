@@ -21,6 +21,7 @@ func main() {
 	}
 
 	route.SetupRoutes(app)
+
 	app.Listen(":4000")
 	database.CloseDB()
 }
