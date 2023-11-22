@@ -3,7 +3,6 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"reflect"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -359,18 +358,114 @@ func UpdateProject(c *fiber.Ctx) error {
 		})
 	}
 
-	test := reflect.ValueOf(projects)
-	num := test.NumField()
-	for i := 0; i < num; i++ {
-		project := test.Field(i)
-		fmt.Println(project)
+	if len(projects.Title) != 0 {
+		oldProj.Title = projects.Title
+	}
+
+	if len(projects.Body) != 0 {
+		oldProj.Body = projects.Body
+	}
+
+	editQuery := "UPDATE projects SET title = (?), body = (?) WHERE id = (?)"
+
+	result, err := database.DataBase.Exec(editQuery, oldProj.Title, oldProj.Body, projectID)
+	if err != nil {
+		return c.Status(500).JSON(models.Response{
+			StatusCode: 500,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": err.Error(),
+			},
+		})
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return c.Status(500).JSON(models.Response{
+			StatusCode: 500,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": err.Error(),
+			},
+		})
 	}
 
 	return c.Status(200).JSON(models.Response{
 		StatusCode: 200,
 		Message:    "error",
 		Data: &fiber.Map{
-			"data": oldProj,
+			"data": rowsAffected,
+		},
+	})
+}
+
+func UpdateProjectImage(c *fiber.Ctx) error {
+	stringProjectID := c.Params("projectID")
+
+	formHeader, err := c.FormFile("image")
+	if err != nil {
+		return c.Status(500).JSON(models.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": "There was an error with parsing the image!",
+			},
+		})
+	}
+
+	formFile, err := formHeader.Open()
+	if err != nil {
+		return c.Status(500).JSON(models.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": err.Error(),
+			},
+		})
+	}
+
+	uploadUrl, err := services.NewMediaUpload().FileUpload(models.File{File: formFile})
+	if err != nil {
+		return c.Status(500).JSON(models.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": err.Error(),
+			},
+		})
+	}
+
+	query := `UPDATE projects SET image = (?) WHERE id = (?)`
+	projectID, err := strconv.Atoi(stringProjectID)
+	if err != nil {
+		return c.Status(500).JSON(models.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": err.Error(),
+			},
+		})
+	}
+	res, err := database.DataBase.Exec(query, uploadUrl, projectID)
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return c.Status(500).JSON(models.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": err.Error(),
+			},
+		})
+	}
+
+	fmt.Println(rowsAffected)
+
+	return c.Status(200).JSON(models.Response{
+		StatusCode: 200,
+		Message:    "success",
+		Data: &fiber.Map{
+			"data": "new url: " + uploadUrl,
 		},
 	})
 }

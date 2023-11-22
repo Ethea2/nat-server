@@ -14,9 +14,14 @@ func SetupRoutes(app *fiber.App) {
 	user.Post("/login", controller.Login)
 	user.Post("/signup", controller.SignUp)
 
+	exp := api.Group("/exp")
+	exp.Post("/:id", controller.CreateExperience)
+	exp.Get("/", controller.GetExperiences)
+
 	project := api.Group("/project")
 	project.Get("/", middleware.Protected(), controller.GetProjects)
 	project.Post("/create/:userID", middleware.Protected(), controller.CreateProject)
 	project.Get("/:id", controller.GetSinglePost)
 	project.Patch("/:id", controller.UpdateProject)
+	project.Patch("/image_edit/:projectID", controller.UpdateProjectImage)
 }
