@@ -34,11 +34,23 @@ func Login(c *fiber.Ctx) error {
 	err := database.DataBase.QueryRow(query, username).
 		Scan(&user.ID, &user.Username, &user.Password)
 	if err != nil {
-		return c.SendString(err.Error())
+		return c.Status(400).JSON(models.Response{
+			StatusCode: 400,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": "No body!",
+			},
+		})
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(login.Password)); err != nil {
-		return c.SendStatus(fiber.StatusUnauthorized)
+		return c.Status(400).JSON(models.Response{
+			StatusCode: 400,
+			Message:    "error",
+			Data: &fiber.Map{
+				"data": "Wrong password!",
+			},
+		})
 	}
 
 	token := jwt.New(jwt.SigningMethodHS256)
@@ -53,8 +65,17 @@ func Login(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.Status(200).
-		JSON(fiber.Map{"status": "success", "message": "Login Successful!", "token": finalToken})
+	return c.Status(200).JSON(models.Response{
+		StatusCode: 200,
+		Message:    "success",
+		Data: &fiber.Map{
+			"data": &fiber.Map{
+				"token":    finalToken,
+				"username": user.Username,
+				"id":       user.ID,
+			},
+		},
+	})
 }
 
 func SignUp(c *fiber.Ctx) error {
