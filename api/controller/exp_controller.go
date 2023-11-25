@@ -15,8 +15,8 @@ func CreateExperience(c *fiber.Ctx) error {
 	exp := new(models.Experiences)
 	userID, err := strconv.Atoi(stringUserID)
 	if err != nil {
-		return c.Status(200).JSON(models.Response{
-			StatusCode: 200,
+		return c.Status(500).JSON(models.Response{
+			StatusCode: 500,
 			Message:    "error",
 			Data: &fiber.Map{
 				"data": err.Error(),
@@ -27,8 +27,8 @@ func CreateExperience(c *fiber.Ctx) error {
 	exp.UserID = userID
 
 	if err := c.BodyParser(&exp); err != nil {
-		return c.Status(200).JSON(models.Response{
-			StatusCode: 200,
+		return c.Status(500).JSON(models.Response{
+			StatusCode: 500,
 			Message:    "error",
 			Data: &fiber.Map{
 				"data": err.Error(),
@@ -41,8 +41,8 @@ func CreateExperience(c *fiber.Ctx) error {
 	query := `INSERT INTO experiences (userID, title, body, position) VALUES (?, ?, ?, ?)`
 	res, err := database.DataBase.Exec(query, exp.UserID, exp.Title, exp.Body, exp.Position)
 	if err != nil {
-		return c.Status(200).JSON(models.Response{
-			StatusCode: 200,
+		return c.Status(500).JSON(models.Response{
+			StatusCode: 500,
 			Message:    "error",
 			Data: &fiber.Map{
 				"data": err.Error(),
@@ -52,8 +52,8 @@ func CreateExperience(c *fiber.Ctx) error {
 
 	newExpID, err := res.LastInsertId()
 	if err != nil {
-		return c.Status(200).JSON(models.Response{
-			StatusCode: 200,
+		return c.Status(500).JSON(models.Response{
+			StatusCode: 500,
 			Message:    "error",
 			Data: &fiber.Map{
 				"data": err.Error(),
