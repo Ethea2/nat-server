@@ -15,7 +15,7 @@ import (
 )
 
 func Login(c *fiber.Ctx) error {
-	godotenv.Load()
+	godotenv.Load(".env")
 	type LoginInput struct {
 		Username string `json:"username"`
 		Password string `json:"password"`

@@ -14,7 +14,7 @@ import (
 func UploadPhoto(input interface{}) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	godotenv.Load()
+	godotenv.Load(".env")
 
 	cld, err := cloudinary.NewFromParams(
 		os.Getenv("CLOUD_NAME"),
