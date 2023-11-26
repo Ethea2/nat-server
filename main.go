@@ -19,7 +19,7 @@ func main() {
 		log.Println(oerr)
 	}
 
-	entries, readerr := os.ReadDir(path + "/app")
+	entries, readerr := os.ReadDir(path)
 	if readerr != nil {
 		log.Fatal(readerr)
 	}
