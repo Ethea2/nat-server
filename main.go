@@ -18,7 +18,15 @@ func main() {
 	if oerr != nil {
 		log.Println(oerr)
 	}
-	fmt.Println(path)
+
+	entries, readerr := os.ReadDir(path)
+	if readerr != nil {
+		log.Fatal(readerr)
+	}
+
+	for _, e := range entries {
+		fmt.Println(e.Name())
+	}
 
 	p, perr := os.Executable()
 	if perr != nil {
