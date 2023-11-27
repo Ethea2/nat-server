@@ -20,8 +20,8 @@ func SetupRoutes(app *fiber.App) {
 
 	project := api.Group("/project")
 	project.Get("/", controller.GetProjects)
+	project.Get("/:id", controller.GetSinglePost)
 	project.Post("/create/:userID", middleware.Protected(), controller.CreateProject)
-	project.Get("/:id", middleware.Protected(), controller.GetSinglePost)
 	project.Patch("/:id", middleware.Protected(), controller.UpdateProject)
 	project.Patch("/image_edit/:projectID", middleware.Protected(), controller.UpdateProjectImage)
 }
