@@ -2,8 +2,6 @@ package utils
 
 import (
 	"log"
-	"os"
-	"regexp"
 	"strings"
 
 	"github.com/joho/godotenv"
@@ -20,11 +18,7 @@ func ConvertStringToArray(input string) []string {
 }
 
 func LoadEnv() {
-	projectName := regexp.MustCompile(`^(.*` + projectDirName + `)`)
-	currentDir, _ := os.Getwd()
-	rootPath := projectName.Find([]byte(currentDir))
-
-	err := godotenv.Load(string(rootPath) + `/.env`)
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
