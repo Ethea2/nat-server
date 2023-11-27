@@ -7,10 +7,10 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/Ethea2/nat-dev/database"
-	"github.com/Ethea2/nat-dev/models"
-	"github.com/Ethea2/nat-dev/services"
-	"github.com/Ethea2/nat-dev/utils"
+	"github.com/Ethea2/nat-server/database"
+	"github.com/Ethea2/nat-server/models"
+	"github.com/Ethea2/nat-server/services"
+	"github.com/Ethea2/nat-server/utils"
 )
 
 func GetProjects(c *fiber.Ctx) error {
@@ -103,7 +103,7 @@ func CreateProject(c *fiber.Ctx) error {
 			StatusCode: http.StatusInternalServerError,
 			Message:    "error",
 			Data: &fiber.Map{
-				"data": "There was an error with parsing the image!",
+				"data": err.Error(),
 			},
 		})
 	}

@@ -3,8 +3,8 @@ package route
 import (
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/Ethea2/nat-dev/api/controller"
-	"github.com/Ethea2/nat-dev/middleware"
+	"github.com/Ethea2/nat-server/api/controller"
+	"github.com/Ethea2/nat-server/middleware"
 )
 
 func SetupRoutes(app *fiber.App) {

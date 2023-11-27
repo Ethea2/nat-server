@@ -6,8 +6,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 
-	"github.com/Ethea2/nat-dev/database"
-	"github.com/Ethea2/nat-dev/models"
+	"github.com/Ethea2/nat-server/database"
+	"github.com/Ethea2/nat-server/models"
 )
 
 func CreateExperience(c *fiber.Ctx) error {

@@ -1,4 +1,4 @@
-module github.com/Ethea2/nat-dev
+module github.com/Ethea2/nat-server
 
 go 1.20
 

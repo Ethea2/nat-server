@@ -10,8 +10,8 @@ import (
 	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/Ethea2/nat-dev/database"
-	"github.com/Ethea2/nat-dev/models"
+	"github.com/Ethea2/nat-server/database"
+	"github.com/Ethea2/nat-server/models"
 )
 
 func Login(c *fiber.Ctx) error {

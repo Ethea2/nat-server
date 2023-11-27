@@ -5,11 +5,12 @@ import (
 
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
+
+	"github.com/Ethea2/nat-server/utils"
 )
 
 func Protected() func(*fiber.Ctx) error {
-	godotenv.Load()
+	utils.LoadEnv()
 	return jwtware.New(jwtware.Config{
 		SigningKey:   jwtware.SigningKey{Key: []byte(os.Getenv("SECRET"))},
 		ErrorHandler: jwtError,

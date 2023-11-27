@@ -2,22 +2,18 @@ package database
 
 import (
 	"database/sql"
-	"log"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
+
+	"github.com/Ethea2/nat-server/utils"
 )
 
 var DataBase *sql.DB
 
 func ConnectDB() error {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Failed to load ENV", err)
-		return err
-	}
-
+	utils.LoadEnv()
+	var err error
 	DataBase, err = sql.Open(("mysql"), os.Getenv("DSN"))
 	if err != nil {
 		return err

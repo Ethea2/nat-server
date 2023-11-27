@@ -3,8 +3,8 @@ package services
 import (
 	"github.com/go-playground/validator"
 
-	"github.com/Ethea2/nat-dev/models"
-	"github.com/Ethea2/nat-dev/utils"
+	"github.com/Ethea2/nat-server/models"
+	"github.com/Ethea2/nat-server/utils"
 )
 
 var validate = validator.New()
